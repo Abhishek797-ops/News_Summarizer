@@ -1,4 +1,3 @@
-# app.py
 import os
 import json
 import requests
@@ -9,7 +8,7 @@ import google.generativeai as genai
 
 app = Flask(__name__, template_folder="templates")
 
-# Configure Gemini
+
 API_KEY = os.environ.get("AIzaSyDxKpQtqXpkZ9ok6CisMSb_EvKLvzK-qzk")
 
 genai.configure(api_key=API_KEY)
@@ -24,21 +23,21 @@ def extract_text_from_url(url, max_chars=40000):
     resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
 
-    # Try article tag
+    
     article_tag = soup.find("article")
     if article_tag:
         text = " ".join(p.get_text(" ", strip=True) for p in article_tag.find_all("p"))
         if len(text) > 200:
             return text[:max_chars]
 
-    # Try main
+    
     main_tag = soup.find("main")
     if main_tag:
         text = " ".join(p.get_text(" ", strip=True) for p in main_tag.find_all("p"))
         if len(text) > 200:
             return text[:max_chars]
 
-    # Fallback: all paragraphs
+    
     paragraphs = [p.get_text(" ", strip=True) for p in soup.find_all("p")]
     text = "\n\n".join(paragraphs)
     if len(text) < 100:
@@ -72,13 +71,13 @@ def clean_and_parse_json(raw_text: str):
     """Cleans Gemini response and extracts valid JSON."""
     raw_clean = raw_text.strip()
 
-    # Remove markdown fences like ```json ... ```
+    
     if raw_clean.startswith("```"):
         raw_clean = raw_clean.strip("`")
         if raw_clean.lower().startswith("json"):
             raw_clean = raw_clean[4:].strip()
 
-    # Extract JSON object with regex
+    
     match = re.search(r"\{.*\}", raw_clean, re.DOTALL)
     if match:
         raw_clean = match.group(0)
@@ -110,12 +109,12 @@ def analyze():
         response = model.generate_content(prompt)
         raw = response.text if hasattr(response, "text") else str(response)
 
-        # Debug: print raw response (optional)
+        
         print("RAW GEMINI RESPONSE:\n", raw)
 
         parsed = clean_and_parse_json(raw)
 
-        # Normalize fields
+        
         bias_score = float(parsed.get("biasScore", 0))
         bias_position = float(parsed.get("biasPosition", (bias_score + 50) * 2))
         bias_position = max(0.0, min(100.0, bias_position))
