@@ -38,6 +38,6 @@ The goal is to make news more **accessible, unbiased, and easy to understand**.
 ## 📂 Project Structure
 ├── app.py # Main application file (runs the summarizer & bias detector)
 ├── requirements.txt # Python dependencies
-├── Procfile # Deployment configuration (for platforms like Heroku)
+├── Procfile # Deployment configuration
 ├── templates/ # HTML templates for the web interface
 ├── README.md # Project documentation
