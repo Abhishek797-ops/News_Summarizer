@@ -41,3 +41,11 @@ The goal is to make news more **accessible, unbiased, and easy to understand**.
 ├── Procfile # Deployment configuration
 ├── templates/ # HTML templates for the web interface
 ├── README.md # Project documentation
+
+
+## 🔮 Future Improvements
+
+🌐 Multi-language support
+📊 Cross-source trend comparison
+🧩 Browser extension for on-page bias detection
+
