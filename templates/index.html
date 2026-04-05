@@ -79,10 +79,15 @@
           <!-- Bias -->
           <div>
             <h3 class="font-bold text-lg">🎯 Bias Analysis</h3>
-            <div class="mt-3 bg-gray-200 dark:bg-gray-700 h-3 rounded-full overflow-hidden">
-              <div id="bias-meter" class="h-3 bg-gradient-to-r from-blue-500 via-gray-400 to-red-500 transition-all duration-700" style="width:50%"></div>
+            <div class="mt-6 relative h-4 rounded-full bg-gradient-to-r from-blue-500 via-gray-300 dark:via-gray-600 to-red-500 shadow-inner">
+              <div id="bias-marker" class="absolute top-1/2 -ml-[10px] w-5 h-8 bg-white border-2 border-gray-800 dark:border-gray-200 rounded shadow-md transform -translate-y-1/2 transition-all duration-700 ease-out" style="left: 50%"></div>
             </div>
-            <p id="bias-score" class="mt-2 text-sm text-gray-700 dark:text-gray-300"></p>
+            <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-2 font-semibold uppercase px-1">
+              <span>Left Lean</span>
+              <span>Center</span>
+              <span>Right Lean</span>
+            </div>
+            <p id="bias-score" class="mt-3 text-sm text-gray-700 dark:text-gray-300 font-medium"></p>
           </div>
 
           <!-- Summary -->
@@ -178,7 +183,7 @@
         return;
       }
 
-      document.getElementById("bias-meter").style.width = `${data.biasPosition}%`;
+      document.getElementById("bias-marker").style.left = `${data.biasPosition}%`;
       document.getElementById("bias-score").textContent = `${data.biasText} (Score: ${data.biasScore})`;
       document.getElementById("summary-content").textContent = data.summary;
 
