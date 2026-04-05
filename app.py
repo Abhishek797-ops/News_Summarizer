@@ -8,17 +8,16 @@ from flask import Flask, request, jsonify, render_template
 from dotenv import load_dotenv
 from textblob import TextBlob
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-import google.generativeai as genai
+from google import genai
 
 # ------------------ SETUP ------------------
 load_dotenv(override=True)
 
 API_KEY = os.getenv("GEMINI_API_KEY")
 if not API_KEY:
-    raise ValueError("Missing GEMINI_API_KEY in .env file")
+    raise ValueError("Missing GEMINI_API_KEY environment variable")
 
-genai.configure(api_key=API_KEY)
-model = genai.GenerativeModel("gemini-2.5-flash")
+client = genai.Client(api_key=API_KEY)
 app = Flask(__name__, template_folder="templates")
 
 # Download tokenizer once
@@ -138,7 +137,10 @@ def analyze():
     prompt = build_prompt(article_text, tone, basic_nlp)
 
     try:
-        response = model.generate_content(prompt)
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt
+        )
         parsed = clean_json(response.text)
 
         bias_score = float(parsed.get("biasScore", 0))
